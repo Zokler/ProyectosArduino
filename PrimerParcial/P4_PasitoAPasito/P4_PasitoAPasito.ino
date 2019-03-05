@@ -18,30 +18,12 @@ char tecla;
 int contadorDeDigitos = 0;
 String vecesEnString;
 int vecesEnInt;
-int Steps = 0;
-boolean Direction = true; 
 
-#define IN1  12
-#define IN2  11
-#define IN3  10
-#define IN4  9
-
-int Paso [ 8 ][ 4 ] = //array de motor a pasos usando medios pasos
-    {   {1, 0, 0, 0},
-        {1, 1, 0, 0},
-        {0, 1, 0, 0},
-        {0, 1, 1, 0},
-        {0, 0, 1, 0},
-        {0, 0, 1, 1},
-        {0, 0, 0, 1},
-        {1, 0, 0, 1}
-     };
-     
 void setup() {
-      pinMode(IN1, OUTPUT); 
-      pinMode(IN2, OUTPUT); 
-      pinMode(IN3, OUTPUT); 
-      pinMode(IN4, OUTPUT); 
+    pinMode(18, OUTPUT);    // Pin 18 conectar a IN4
+    pinMode(19, OUTPUT);    // Pin 19 conectar a IN3
+    pinMode(20, OUTPUT);     // Pin 20 conectar a IN2
+    pinMode(21, OUTPUT);     // Pin 21 conectar a IN1
     
     lcd.begin(16,2);
     lcd.home();
@@ -81,15 +63,15 @@ esCero:
       reboot();
   }
   
-}//fin loop
+}
 
     void iniciarSecuencia(int vecesRecibidas)
-    {   
+    {
         int secuencia[vecesRecibidas];
         char teclaDeSecuencia;
         lcd.clear();
         lcd.setCursor(0,0);
-        lcd.print("1-Der 2-Izq");
+        lcd.print("1-Der 2-Izq 3-Pa");
        
         for(int contadorDeSecuencia = 1; contadorDeSecuencia <= vecesRecibidas; contadorDeSecuencia++)
         {
@@ -106,12 +88,16 @@ esCero:
                 case '2':
                 secuencia[contadorDeSecuencia] = 2;
                 break;
-                
+
+                case '3':
+                secuencia[contadorDeSecuencia] = 3;
+                break;
+
                 default:
                 lcd.print("no valido");
                 delay(1000);
                 lcd.clear();
-                lcd.print("1-Der 2-Izq");
+                lcd.print("1-Der 2-Izq 3-Pa");
                 goto noFueNumeroValido;
                 break;
               }
@@ -122,28 +108,15 @@ esCero:
           if(secuencia[girarMotor]==1)
           {
               lcd.clear();
-              lcd.setCursor(0,0);
-              lcd.print("Paso: ");
-              lcd.print(girarMotor);
-              lcd.setCursor(0,1);
-              lcd.print("Derecha");
-              Direction = true;
-              stepper();
-              delay(100);
-              
+              lcd.print("izquierda");
+              paso_izq();
 
           }
           if(secuencia[girarMotor]==2)
           {
               lcd.clear();
-              lcd.setCursor(0,0);
-              lcd.print("Paso: ");
-              lcd.print(girarMotor);
-              lcd.setCursor(0,1);
-              lcd.print("Izquierda");
-              Direction = false;
-              stepper();
-              delay(100);
+              lcd.print("derecha");
+              paso_der();
 
           } 
         }//FIN FOR GIRARMOTOR
@@ -154,29 +127,58 @@ void reboot()
      contadorDeDigitos = 0;
      vecesEnString = ' ';
      vecesEnInt = 0;
-     Steps = 0;
-     Direction = true;   
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
 }
-void stepper()            //Avanza un paso
-{
-  SetDirection();
-  digitalWrite( IN1, Paso[Steps][ 0] );
-  digitalWrite( IN2, Paso[Steps][ 1] );
-  digitalWrite( IN3, Paso[Steps][ 2] );
-  digitalWrite( IN4, Paso[Steps][ 3] );
+void paso_der(){         // Pasos a la derecha
+ digitalWrite(18, LOW); 
+ digitalWrite(19, LOW);  
+ digitalWrite(20, HIGH);  
+ digitalWrite(21, HIGH);  
+   delay(retardo); 
+ digitalWrite(18, LOW); 
+ digitalWrite(19, HIGH);  
+ digitalWrite(20, HIGH);  
+ digitalWrite(21, LOW);  
+   delay(retardo); 
+ digitalWrite(18, HIGH); 
+ digitalWrite(19, HIGH);  
+ digitalWrite(20, LOW);  
+ digitalWrite(21, LOW);  
+  delay(retardo); 
+ digitalWrite(18, HIGH); 
+ digitalWrite(19, LOW);  
+ digitalWrite(20, LOW);  
+ digitalWrite(21, HIGH);  
+  delay(retardo);  
 }
 
-void SetDirection()
-{
-    if(Direction)
-        Steps++;
-    else 
-        Steps--; 
-     
-    Steps = ( Steps + 7 ) % 7 ;
-/*    if (Steps>7)
-      Steps=0 ;
-      if (Steps<0)
-      Steps=7 ;
-    */
+void paso_izq() {        // Pasos a la izquierda
+ digitalWrite(18, HIGH); 
+ digitalWrite(19, HIGH);  
+ digitalWrite(20, LOW);  
+ digitalWrite(21, LOW);  
+  delay(retardo); 
+ digitalWrite(18, LOW); 
+ digitalWrite(19, HIGH);  
+ digitalWrite(20, HIGH);  
+ digitalWrite(21, LOW);  
+  delay(retardo); 
+ digitalWrite(18, LOW); 
+ digitalWrite(19, LOW);  
+ digitalWrite(20, HIGH);  
+ digitalWrite(21, HIGH);  
+  delay(retardo); 
+ digitalWrite(18, HIGH); 
+ digitalWrite(19, LOW);  
+ digitalWrite(20, LOW);  
+ digitalWrite(21, HIGH);  
+  delay(retardo); 
 }
+        
+void apagado() {         // Apagado del Motor
+ digitalWrite(18, LOW); 
+ digitalWrite(19, LOW);  
+ digitalWrite(20, LOW);  
+ digitalWrite(21, LOW);  
+ }
