@@ -1,5 +1,5 @@
 #include <LiquidCrystal.h>
-LiquidCrystal lcd(48, 46, 44, 42, 40, 38);
+LiquidCrystal lcd(1, 2, 4, 5, 6, 7);
 #include <Keypad.h>
 const byte numRows= 4; //number of rows on the keypad
 const byte numCols= 4; //number of columns on the keypad
@@ -85,7 +85,8 @@ esCero:
 
     void iniciarSecuencia(int vecesRecibidas)
     {   
-        int secuencia[vecesRecibidas];
+        int Veces=0;
+        int secuencia[vecesRecibidas*100];
         char teclaDeSecuencia;
         lcd.clear();
         lcd.setCursor(0,0);
@@ -100,11 +101,19 @@ esCero:
               switch(teclaDeSecuencia)
               {
                 case '1':
-                secuencia[contadorDeSecuencia] = 1;
+               for(int i=0; i<100; i++)
+               {
+                  secuencia[Veces] = 1;
+                  Veces++;
+               }
                 break;
 
                 case '2':
-                secuencia[contadorDeSecuencia] = 2;
+                for(int i=0; i<100; i++)
+               {
+                  secuencia[Veces] = 2;
+                  Veces++;
+               }
                 break;
                 
                 default:
@@ -117,7 +126,7 @@ esCero:
               }
         }//FIN FOR CONTADORDESECUENCIA
 
-        for(int girarMotor = 1; girarMotor <= vecesRecibidas; girarMotor++)
+        for(int girarMotor = 1; girarMotor <= vecesRecibidas*100; girarMotor++)
         {
           if(secuencia[girarMotor]==1)
           {
@@ -128,8 +137,10 @@ esCero:
               lcd.setCursor(0,1);
               lcd.print("Derecha");
               Direction = true;
-              stepper();
-              delay(100);
+              for(int i=0; i<=7; i++){
+                stepper();
+                delay(5);
+              }
               
 
           }
@@ -142,8 +153,10 @@ esCero:
               lcd.setCursor(0,1);
               lcd.print("Izquierda");
               Direction = false;
-              stepper();
-              delay(100);
+              for(int i=0; i<=7; i++){
+                stepper();
+                delay(5);
+              }
 
           } 
         }//FIN FOR GIRARMOTOR
@@ -159,11 +172,12 @@ void reboot()
 }
 void stepper()            //Avanza un paso
 {
-  SetDirection();
+  
   digitalWrite( IN1, Paso[Steps][ 0] );
   digitalWrite( IN2, Paso[Steps][ 1] );
   digitalWrite( IN3, Paso[Steps][ 2] );
   digitalWrite( IN4, Paso[Steps][ 3] );
+  SetDirection();
 }
 
 void SetDirection()
