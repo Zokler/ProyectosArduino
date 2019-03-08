@@ -1,20 +1,20 @@
 #include <LiquidCrystal.h>
-LiquidCrystal lcd(1, 2, 4, 5, 6, 7);
+LiquidCrystal lcd(48, 46, 44, 42, 40, 38);
 
-const int s0 = 22;  
-const int s1 = 24;  
-const int s2 = 26;  
-const int s3 = 28;  
-const int out = 30;
+const int s0 = 1;  
+const int s1 = 2;  
+const int s2 = 3;  
+const int s3 = 4;  
+const int out = 5;
 
 int rojo = 0;  
 int verde = 0;  
 int azul = 0;
 //SENSOR/////////////////
 
-int in1 = 8; //pin 8
-int in2 = 9; //pin 9
-int enA = 10; //pin 10
+int in1 = 6; //pin 6
+int in2 = 7; //pin 7
+int enA = 8; //pin PWM AHH
 //MOTOR/////////////////
 void setup() {
    
@@ -44,43 +44,28 @@ void loop(){
   Serial.print(" ");
   Serial.print(azul, DEC);
   
-  if (rojo < azul && verde > azul && rojo < 35)  //rojo enciende el foco
+  if (rojo < azul && verde > azul && rojo < 35)
     {
-       Serial.println("////////////////////////////////////");  
-       Serial.println("Rojo: on");
-       analogWrite(enA, 255);
-       digitalWrite(in1, HIGH);
-       digitalWrite(in2, LOW);
-    }
-       
-    if (azul < rojo && azul < verde && verde < rojo)//azul apaga el foco  
-    {  
-  //   /  lcd.clear();
-       Serial.println("////////////////////////////////////");
-       Serial.println("AZUL: on"); 
-       analogWrite(enA, 255);
+       lcd.clear();
+       lcd.setCursor(0,0); 
+       lcd.print("Rojo: off");
+       analogWrite(enA, 0);
        digitalWrite(in1, LOW);
-       digitalWrite(in2, LOW);      
-    }  
-  
-    if (rojo > verde && azul > verde )  
-    {  
-  //     lcd.clear();
-       Serial.println("////////////////////////////////////");  
-       Serial.println("Verde: on");
-       analogWrite(enA, 255);
-       digitalWrite(in1, HIGH);
        digitalWrite(in2, LOW);
+       delay(250);
     }
+      
      if (rojo < verde && azul < verde && rojo <34 && rojo > 7)  
     {  
-  //     lcd.clear();
-       Serial.println("////////////////////////////////////");  
-       Serial.println("Morado: on");
+       lcd.clear();
+       lcd.setCursor(0,0); 
+       lcd.print("Morado: on");
        analogWrite(enA, 255);
        digitalWrite(in1, HIGH);
        digitalWrite(in2, LOW);
-    }  
+       delay(250);
+    }
+    
    Serial.println(" ");
   delay(1000);     
   }  

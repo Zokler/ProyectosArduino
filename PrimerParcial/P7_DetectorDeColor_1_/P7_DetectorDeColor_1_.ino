@@ -76,3 +76,50 @@ void color()
   Serial.println("////////////////");
   delay(1000);
 }
+/*
+ * color();
+Serial.print(" ");
+Serial.print(rojo, DEC);
+Serial.print(" ");
+Serial.print(verde, DEC);
+Serial.print(" ");
+Serial.print(azul, DEC);
+
+if (rojo < azul && verde > azul && rojo < 35)  //rojo enciende el foco
+  {
+     Serial.println("////////////////////////////////////");  
+     Serial.println("Rojo: on");
+     analogWrite(enA, 255);
+     digitalWrite(in1, HIGH);
+     digitalWrite(in2, LOW);
+  }
+     
+  if (azul < rojo && azul < verde && verde < rojo)//azul apaga el foco  
+  {  
+//   /  lcd.clear();
+     Serial.println("////////////////////////////////////");
+     Serial.println("AZUL: on"); 
+     analogWrite(enA, 255);
+     digitalWrite(in1, LOW);
+     digitalWrite(in2, LOW);      
+  }  
+
+  if (rojo > verde && azul > verde )  
+  {  
+//     lcd.clear();
+     Serial.println("////////////////////////////////////");  
+     Serial.println("Verde: on");
+     analogWrite(enA, 255);
+     digitalWrite(in1, HIGH);
+     digitalWrite(in2, LOW);
+  }
+   if (rojo < verde && azul < verde && rojo <34 && rojo > 7)  
+  {  
+//     lcd.clear();
+     Serial.println("////////////////////////////////////");  
+     Serial.println("Morado: on");
+     analogWrite(enA, 255);
+     digitalWrite(in1, HIGH);
+     digitalWrite(in2, LOW);
+  }
+ */
