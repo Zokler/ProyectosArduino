@@ -19,6 +19,7 @@ int contadorDeDigitos = 0;
 String vecesEnString;
 int vecesEnInt;
 int Steps = 0;
+int veces=100;
 boolean Direction = true; 
 
 #define IN1  12
@@ -127,7 +128,7 @@ esCero:
         }//FIN FOR CONTADORDESECUENCIA
 
         for(int girarMotor = 1; girarMotor <= vecesRecibidas*100; girarMotor++)
-        {
+        { 
           if(secuencia[girarMotor]==1)
           {
               lcd.clear();
@@ -159,6 +160,7 @@ esCero:
               }
 
           } 
+          veces++;
         }//FIN FOR GIRARMOTOR
         reboot();
     }//FIN FUNCION
