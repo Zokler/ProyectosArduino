@@ -43,6 +43,12 @@ void loop(){
   Serial.print(verde, DEC);
   Serial.print(" ");
   Serial.print(azul, DEC);
+
+  if (rojo < verde && azul < verde && azul > 10)
+    {
+       lcd.clear();
+       lcd.print("No color");
+    }
   
   if (rojo < azul && verde > azul && rojo < 35)  //rojo motor rapido
     {
@@ -52,7 +58,7 @@ void loop(){
        digitalWrite(in1, HIGH);
        digitalWrite(in2, LOW);
        analogWrite(enA, 255);
-       delay(250);
+       delay(5000);
     }
        
     if (azul < rojo && azul < verde && verde < rojo)//azul   

@@ -43,27 +43,35 @@ void loop(){
   Serial.print(verde, DEC);
   Serial.print(" ");
   Serial.print(azul, DEC);
+
+  if (rojo < verde && azul < verde && azul > 10)
+    {
+       lcd.clear();
+       lcd.print("No color");
+    }
   
   if (rojo < azul && verde > azul && rojo < 35)
     {
        lcd.clear();
        lcd.setCursor(0,0); 
        lcd.print("Rojo: off");
-       analogWrite(enA, 0);
-       digitalWrite(in1, LOW);
-       digitalWrite(in2, LOW);
+       Serial.print("rojo");
+       analogWrite(enA, 255);
+       digitalWrite(in1, 0);
+       digitalWrite(in2, 1);
        delay(250);
     }
       
-     if (rojo < verde && azul < verde && rojo <34 && rojo > 7)  
+     if (rojo < verde && azul < verde && azul<10 )  
     {  
        lcd.clear();
        lcd.setCursor(0,0); 
        lcd.print("Morado: on");
+       Serial.print("morado");
        analogWrite(enA, 255);
        digitalWrite(in1, HIGH);
        digitalWrite(in2, LOW);
-       delay(250);
+       delay(5000);
     }
     
    Serial.println(" ");
