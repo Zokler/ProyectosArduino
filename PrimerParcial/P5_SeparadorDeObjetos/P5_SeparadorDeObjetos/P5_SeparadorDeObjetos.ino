@@ -14,7 +14,6 @@ int rojo = 0;
 int verde = 0;  
 int azul = 0;
 ////////////////////////////////
-//////Variables de control//////
 
 void setup() {
   //pines del servo
@@ -36,13 +35,11 @@ void setup() {
   topMotor.write(0);
   delay(500);
   botMotor.write(0);
-  delay(500);
-  
+  delay(500); 
 }
 
 void loop() {
   reinicio:
-  color();
   lcd.setCursor(0,0);
   lcd.print("Escaneo:");
   lcd.setCursor(0,1);
@@ -56,6 +53,7 @@ void loop() {
   delay(1000);
   lcd.setCursor(0,1);
   lcd.print("0");
+  color(); //lectura de color
   delay(150);
   
   bool compNoColor = comprobarNoColor(); //false significa que detectó un color, true que no detectó color
@@ -67,23 +65,23 @@ void loop() {
     bool compAzul  = comprobarAzul();
       if(compRojo) //si detecta Rojo
         {
-          moverBotMotor(30);
-          moverTopMotor();
+          moverBotMotor(30); //Mueve el conducto a 30°
+          moverTopMotor();   //Arroja la pieza color rojo al conducto
         }
-      if(compVerde)////si detecta Verde
+      if(compVerde)//si detecta Verde
         {
-          moverBotMotor(90);
-          moverTopMotor();
+          moverBotMotor(90); //Mueve el conducto a 90°
+          moverTopMotor();   //Arroja la pieza color verde al conducto
         }
       if(compAzul)//si detecta Azul
         {
-          moverBotMotor(150);
-          moverTopMotor();
+          moverBotMotor(150); //Mueve el conducto a 150°
+          moverTopMotor();    //Arroja la pieza color azul al conducto
         }
   }
   else
   {
-   goto reinicio;
+   goto reinicio; //si no identificó color, a la etiqueta de reinicio para empezar otro escaneo de colores
   }
 
 }
@@ -103,6 +101,7 @@ void color()
   Serial.print(verde, DEC);
   Serial.print(" ");
   Serial.print(azul, DEC);
+  Serial.println(" ");
 }
 
 //--comprobación de colores----------------------------------------
@@ -112,6 +111,7 @@ bool comprobarNoColor()
     {
        lcd.clear();
        lcd.print("No color");
+       Serial.println("No color");
        return true;
     }
     return false;
@@ -123,6 +123,7 @@ bool comprobarRojo()
   {
        lcd.clear();
        lcd.print("Rojo");
+       Serial.println("Rojo");
        return  true;
   }
   return false;
@@ -133,9 +134,11 @@ bool comprobarVerde()
   if (rojo > verde && azul > verde )  
   {  
        lcd.clear();  
-       lcd.println("v: foco on");
-
-  }  
+       lcd.println("Verde");
+       Serial.println("Verde");
+       return true;
+  }
+  return false;
 }
 //----------------------------------------------------------------Azul
 bool comprobarAzul()
@@ -144,6 +147,7 @@ bool comprobarAzul()
   {  
        lcd.clear();
        lcd.println("Azul");
+       Serial.println("Azul");
        return true;      
   }
   return false;
