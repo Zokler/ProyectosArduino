@@ -7,6 +7,8 @@ const int s2 = 3;
 const int s3 = 4;  
 const int out = 5;
 
+boolean moradito=false;
+
 int rojo = 0;  
 int verde = 0;  
 int azul = 0;
@@ -44,14 +46,19 @@ void loop(){
   Serial.print(" ");
   Serial.print(azul, DEC);
 
-  if (rojo < verde && azul < verde && azul > 10)
+  if (rojo > azul && azul < verde && azul > 10 && verde > 25)
     {
+       moradito=false;
        lcd.clear();
        lcd.print("No color");
+       digitalWrite(in1, LOW);
+       digitalWrite(in2, LOW);
+       analogWrite(enA, 0);
     }
   
   if (rojo < azul && verde > azul && rojo < 35)  //rojo motor rapido
     {
+       moradito=false;
        lcd.clear();
        lcd.setCursor(0,0); 
        lcd.print("Rojo: rapido");
@@ -63,6 +70,7 @@ void loop(){
        
     if (azul < rojo && azul < verde && verde < rojo)//azul   
     {  
+       moradito=false;
        lcd.clear();
        lcd.setCursor(0,0); 
        lcd.print("Azul: lento");
@@ -74,6 +82,7 @@ void loop(){
   
     if (rojo > verde && azul > verde )  //verde
     {  
+       moradito=false;
        lcd.clear();
        lcd.setCursor(0,0); 
        lcd.print("Verde: Freno");
@@ -82,13 +91,27 @@ void loop(){
        analogWrite(enA, 0);
        delay(250);
     }
-     if (rojo < verde && azul < verde && rojo <34 && rojo > 7)  //morado
+     if (rojo < verde && azul < verde && rojo < 15 && rojo > 7)  //morado
     {  
        lcd.clear();
        lcd.setCursor(0,0); 
        lcd.print("Morado: Acelerar");
        digitalWrite(in1, LOW);
        digitalWrite(in2, HIGH); //combinacion para avanzar
+       if(!moradito)
+       {
+         for(int i=10; i<256; i+=20)
+         {
+            analogWrite(enA, i);
+            delay(500);
+         }
+         moradito=true;
+       }
+       else
+       {
+          analogWrite(enA, 255);
+       }
+       /*
        analogWrite(enA, 63);
        delay(50);
        analogWrite(enA, 126);
@@ -97,6 +120,7 @@ void loop(){
        delay(50);
        analogWrite(enA, 255);
        delay(50);
+       */
     }  
    Serial.println(" ");
   delay(1000);     
