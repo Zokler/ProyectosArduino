@@ -1,6 +1,6 @@
 #include <Servo.h>
 #include <LiquidCrystal.h> 
-LiquidCrystal lcd(22, 24, 26, 28, 30, 32);
+//LiquidCrystal Serial(22, 24, 26, 28, 30, 32);
 Servo topMotor;
 Servo botMotor;
 //Sensor de color//////////////
@@ -10,74 +10,81 @@ const int s2 = 3;
 const int s3 = 4;  
 const int out = 5;
 
+bool compNoColor;
 int rojo = 0;  
 int verde = 0;  
 int azul = 0;
 ////////////////////////////////
 
 void setup() {
+  Serial.begin(115200);
   //pines del servo
   topMotor.attach(9);
-  botMotor.attach(10);
+  botMotor.attach(8);
   //pines del sensor
   pinMode(s0,OUTPUT);  
   pinMode(s1,OUTPUT);  
   pinMode(s2,OUTPUT);  
   pinMode(s3,OUTPUT);  
   pinMode(out,INPUT);   
-  digitalWrite(s0,HIGH);  
-  digitalWrite(s1,HIGH);
+  digitalWrite(s0,1);  
+  digitalWrite(s1,0);
   //pos la pantalla, menso
-  lcd.begin(16,2);
-  lcd.home();
-  lcd.print("xd");
+  //Serial.begin(16,2);
+//  Serial.home();
+  Serial.print("xd");
   //inicializar posición de servomotores
-  topMotor.write(0);
+  topMotor.write(180);
   delay(500);
-  botMotor.write(0);
+  botMotor.write(180);
   delay(500); 
 }
 
 void loop() {
   reinicio:
-  lcd.setCursor(0,0);
-  lcd.print("Escaneo:");
-  lcd.setCursor(0,1);
-  lcd.print("3");
+  //(0,0);
+  Serial.print("Escaneo:");
+  //(0,1);
+  Serial.print("3");
   delay(1000);
-  lcd.setCursor(0,1);
-  lcd.print("2");
+  //(0,1);
+  Serial.print("2");
   delay(1000);
-  lcd.setCursor(0,1);
-  lcd.print("1");
+  //(0,1);
+  Serial.print("1");
   delay(1000);
-  lcd.setCursor(0,1);
-  lcd.print("0");
+  //(0,1);
+  Serial.println("0");
   color(); //lectura de color
   delay(150);
   
-  bool compNoColor = comprobarNoColor(); //false significa que detectó un color, true que no detectó color
+  compNoColor = comprobarNoColor(); //false significa que detectó un color, true que no detectó color
   delay(250);
   if( !compNoColor  )
   {
     bool compRojo  = comprobarRojo();
     bool compVerde = comprobarVerde();
     bool compAzul  = comprobarAzul();
+    
       if(compRojo) //si detecta Rojo
         {
-          moverBotMotor(30); //Mueve el conducto a 30°
+          moverBotMotor(0); //Mueve el conducto a 30°
+          delay(1500);
           moverTopMotor();   //Arroja la pieza color rojo al conducto
         }
       if(compVerde)//si detecta Verde
         {
           moverBotMotor(90); //Mueve el conducto a 90°
+          delay(1500);
           moverTopMotor();   //Arroja la pieza color verde al conducto
         }
       if(compAzul)//si detecta Azul
         {
-          moverBotMotor(150); //Mueve el conducto a 150°
+          moverBotMotor(40); //Mueve el conducto a 150°
+          delay(1500);
           moverTopMotor();    //Arroja la pieza color azul al conducto
         }
+        
   }
   else
   {
@@ -107,22 +114,22 @@ void color()
 //--comprobación de colores----------------------------------------
 bool comprobarNoColor()
 {
-    if (rojo < verde && azul < verde && azul > 10)
-    {
-       lcd.clear();
-       lcd.print("No color");
+ //   if (rojo < 10 && verde <160 && verde >140; azul >100 && azul <120)
+   // {
+//       Serial.clear();
+     //  Serial.print("No color");
        Serial.println("No color");
-       return true;
-    }
+       //return true;
+    //}
     return false;
 }
 //-----------------------------------------------------------------Rojo
 bool comprobarRojo()
 {
-  if (rojo < azul && verde > azul && rojo < 35)
+  if (rojo > 55 && verde > 110 && verde < 135)
   {
-       lcd.clear();
-       lcd.print("Rojo");
+//       Serial.clear();
+       Serial.print("Rojo");
        Serial.println("Rojo");
        return  true;
   }
@@ -131,10 +138,10 @@ bool comprobarRojo()
 //-----------------------------------------------------------------Verde
 bool comprobarVerde()
 {
-  if (rojo > verde && azul > verde )  
+  if (rojo > 7 && verde < 100 && azul < verde && rojo < 25)  
   {  
-       lcd.clear();  
-       lcd.println("Verde");
+//       Serial.clear();  
+       Serial.println("Verde");
        Serial.println("Verde");
        return true;
   }
@@ -143,10 +150,10 @@ bool comprobarVerde()
 //----------------------------------------------------------------Azul
 bool comprobarAzul()
 {
-  if (azul < rojo && azul < verde && verde < rojo)
+  if (rojo > 30 && rojo < 55 && verde < 60 && verde > 20 && azul > rojo && azul > 19 && azul < 30) 
   {  
-       lcd.clear();
-       lcd.println("Azul");
+//       Serial.clear();
+       Serial.println("Azul");
        Serial.println("Azul");
        return true;      
   }
@@ -155,19 +162,18 @@ bool comprobarAzul()
 //*************************************Mover motores********************
 void moverTopMotor()
 {
-  for(int i = 1; i <= 180; i++)
-  {
-    topMotor.write(i);
-    delay(2);
-  }
-  delay(500);
 
-  for(int i = 180; i >= 0; i++)
+  for(int i = 180; i >= 130; i--)
   {
     topMotor.write(i);
-    delay(2);
+    delay(30);
   }
   delay(500);
+    for(int i = 150; i <= 180; i++)
+  {
+    topMotor.write(i);
+    delay(30);
+  }
 }
 //***********************************************************************
 void moverBotMotor(int grados)

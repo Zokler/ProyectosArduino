@@ -25,8 +25,8 @@ void setup() {
   pinMode(s2,OUTPUT);  
   pinMode(s3,OUTPUT);  
   pinMode(out,INPUT);
-  digitalWrite(s0,HIGH);  
-  digitalWrite(s1,HIGH);
+  digitalWrite(s0,1);  
+  digitalWrite(s1,0);
 ///////////////SENSOR///////////
   pinMode(in1, OUTPUT);
   pinMode(in2, OUTPUT);
