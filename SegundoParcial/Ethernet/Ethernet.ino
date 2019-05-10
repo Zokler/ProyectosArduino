@@ -119,13 +119,19 @@ void loop() {
            
            if (readString.indexOf("?button3on") >0){
                digitalWrite(3, HIGH);
+               digitalWrite(4, LOW);
+               digitalWrite(5, HIGH); //combinacion para avanzar
+
            }
            if (readString.indexOf("?button3off") >0){
+
                digitalWrite(3, LOW);
+               digitalWrite(4, LOW);
+               digitalWrite(5, LOW); //combinacion para avanzar
            }
            
            
-           if (readString.indexOf("?button4on") >0){
+          /* if (readString.indexOf("?button4on") >0){
                digitalWrite(4, HIGH);
            }
            if (readString.indexOf("?button4off") >0){
@@ -138,7 +144,7 @@ void loop() {
            if (readString.indexOf("?button5off") >0){
                digitalWrite(5, LOW);
            }
-           
+           */
            
            if (readString.indexOf("?button6on") >0){
                digitalWrite(6, HIGH);
