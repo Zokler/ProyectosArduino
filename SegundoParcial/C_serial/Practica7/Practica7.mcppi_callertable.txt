@@ -1,0 +1,12 @@
+main
+	__CC2DW
+		____DoICP
+	ADC_Init
+	UART1_Init
+	UART1_Write_Text
+		UART1_Write
+	UART1_Write
+	ADC_Read
+		Delay_22us
+	Bcd2Dec16
+		Mul_16X16_U
