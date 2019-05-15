@@ -26,9 +26,15 @@ void loop() {
     }
     // try to send the character to
     // the specific slave id
-    if ( slaveId > 0 ) {
+    if ( slaveId == 1 ) {
       Wire.beginTransmission( slaveId ) ;
-      Wire.write( ch ) ;
+      int n = 65;
+      Wire.write( n ) ;
+      Wire.endTransmission() ;
+    }
+    if ( slaveId == 2 ) {
+      Wire.beginTransmission( slaveId ) ;
+      Wire.write( 65 ) ;
       Wire.endTransmission() ;
     }
   }
