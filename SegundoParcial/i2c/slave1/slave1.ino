@@ -6,16 +6,19 @@ void setup() {
   int slaveId = 1 ;
   Wire.begin( slaveId ) ;
   // setup callback function
-  Wire.onReceive( onWireReceive ) ;
+  //Wire.onReceive( onWireReceive ) ;
 }
 void loop() {
   // nothing to do
+    Wire.onReceive( onWireReceive ) ;
+
 }
 void onWireReceive( int howMany ) {
   while ( Wire.available() ) {
     // print back all the characters
     // into console terminal
-    char ch = Wire.read() ;
-    Serial.print( ch ) ;
+    int ch = Wire.read() ;
+    char xd = ch;
+    Serial.print( xd ) ;
   }
 }
