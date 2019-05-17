@@ -12,19 +12,17 @@ char keymap[numRows][numCols]=
 {'E', '0', 'F', 'D'}
 };
 byte rowPins[numRows] = {22,24,26,28}; 
-byte colPins[numCols]= {30,32,34,36}; //A0, A1 PARA ARDUINO UNO
+byte colPins[numCols]= {30,32,34,36}; 
 Keypad myKeypad= Keypad(makeKeymap(keymap), rowPins, colPins, numRows, numCols);
 //-------------------------------------------------------------------------------;
 char tecla;
 
 #include <Wire.h>
-// preparing for which slave device
-// need to be connected
 int slaveId = 0 ;
 void setup() {
   Serial.begin( 9600 ) ;
   while ( !Serial ) ;
-  // Run as I2C Master
+
   Wire.begin() ;
 
     lcd.begin(16,2);
@@ -35,10 +33,6 @@ void loop() {
   tecla = myKeypad.waitForKey();
   lcd.print(tecla);
   
-    // console terminal read per character
-
-    // map key ‘1’ for slave device id #1
-    // map key ‘2’ for slave device id #2
     switch ( tecla ) {
       case '1' :
         slaveId = 1 ;
@@ -55,8 +49,7 @@ void loop() {
         tecla = myKeypad.waitForKey();
         return ;
     }
-    // try to send the character to
-    // the specific slave id
+
     if ( slaveId == 1 ) {
       Wire.beginTransmission( slaveId ) ;
       lcd.clear();
